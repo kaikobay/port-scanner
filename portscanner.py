@@ -1,27 +1,50 @@
 import ipaddress
 import socket
 
-host = input('Input Target IP address:')
 
 def validate_ip(host):
     try:
         ipaddress.ip_address(host)
-        portscan(host)
         return True
         
     except ValueError:
         print(f"ERROR: {host} is not a valid IP address")
         return False
 
-def portscan(host):
-    for port in range(1,101):
+def target_port():
+    print('Select target ports\n1 - Common ports\n2 - Well-known ports\n3 - Custom')
+    port_mode = int(input())
+
+    if port_mode == 1:
+        return [20,53,143,443]
+    elif port_mode == 2:
+        return list(range(1, 1025))
+    elif port_mode == 3:
+        custom_ports = input("Enter custom ports separated by commas:")
         try:
-            s = socket.socket()
-            s.connect((host, port))
-            print('open port:%d' % port)
-            s.close()
-        except: pass
+            return [int(port.strip()) for port in custom_ports.split(',')]
+        except ValueError:
+            print("ERROR: Invalid custom port numbers")
+            return False
+    else:
+        print(f"ERROR: Invalid option")
+        return []
+
+
+def portscan(host, ports):
+    for port in ports:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(1)
+                s.connect((host, port))
+                print(f'open port:{port}')
+        except (socket.timeout, socket.error):
+            pass
+
 
 if __name__ == '__main__':
-    host = input('Input Target IP address: ')
-    validate_ip(host)
+    host = input('Enter Target IP address: ')
+    if validate_ip(host):
+        ports = target_port()
+        if ports:
+            portscan(host, ports)
