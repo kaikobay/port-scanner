@@ -26,7 +26,7 @@ This is a simple port scanner written in Python. It allows users to specify an I
     3 - Custom
     ```
 
-    - **Option 1**: Scans common ports (20, 53, 143, 443).
+    - **Option 1**: Scans common ports (20,21,22,23,25,53,80,110,119,123,143,161,194,443).
     - **Option 2**: Scans well-known ports (1-1024).
     - **Option 3**: Allows you to enter custom ports separated by commas.
         ```
