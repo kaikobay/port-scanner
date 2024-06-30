@@ -16,7 +16,7 @@ def target_port():
     port_mode = int(input())
 
     if port_mode == 1:
-        return [20,53,143,443]
+        return [20,21,22,23,25,53,80,110,119,123,143,161,194,443]
     elif port_mode == 2:
         return list(range(1, 1025))
     elif port_mode == 3:
